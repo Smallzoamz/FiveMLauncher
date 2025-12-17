@@ -316,14 +316,24 @@ function renderServersList() {
                 ${server.savedPureMode !== undefined ? `<span class="server-pure">P${server.savedPureMode}</span>` : ''}
             </div>
             <div class="server-item-actions">
-                <button class="btn btn-danger btn-sm" onclick="deleteServer('${server.id}')">🗑️</button>
+                <button class="btn btn-danger btn-sm btn-delete-server" data-server-id="${server.id}">🗑️</button>
             </div>
         `;
+
+        // Click to select server
         div.addEventListener('click', (e) => {
             if (!e.target.closest('.btn')) {
                 selectServer(server);
             }
         });
+
+        // Delete button click
+        const deleteBtn = div.querySelector('.btn-delete-server');
+        deleteBtn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            await deleteServer(server.id);
+        });
+
         elements.serversList.appendChild(div);
     });
 }
@@ -465,7 +475,7 @@ async function addServer() {
     showToast('Server added!', 'success');
 }
 
-window.deleteServer = async function (serverId) {
+async function deleteServer(serverId) {
     serversConfig.servers = serversConfig.servers.filter(s => s.id !== serverId);
     await window.electronAPI.saveServersConfig(serversConfig);
 
@@ -476,7 +486,7 @@ window.deleteServer = async function (serverId) {
 
     renderServersList();
     showToast('Server removed', 'success');
-};
+}
 
 // ==================== Profiles ====================
 async function loadProfiles() {
