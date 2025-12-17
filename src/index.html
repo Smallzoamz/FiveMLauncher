@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src http: https:">
+    <title>FiveM Launcher</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Custom Title Bar -->
+        <header class="title-bar">
+            <div class="title-bar-left">
+                <div class="app-logo">
+                    <span class="logo-icon">
+                        <img src="../assets/logo.png" alt="FiveM" width="32" height="32">
+                    </span>
+                    <span class="logo-text">LAUNCHER</span>
+                </div>
+                <div class="update-badge" id="update-badge" style="display: none;">
+                    <span class="badge-dot"></span>
+                    <span>Update Available</span>
+                </div>
+            </div>
+            <div class="title-bar-center">
+                <nav class="nav-tabs">
+                    <button class="nav-tab active" data-tab="home">
+                        <svg class="tab-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                            <polyline points="9,22 9,12 15,12 15,22" />
+                        </svg>
+                        <span>HOME</span>
+                    </button>
+                    <button class="nav-tab" data-tab="servers">
+                        <svg class="tab-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="6" rx="1" />
+                            <rect x="2" y="15" width="20" height="6" rx="1" />
+                            <circle cx="6" cy="6" r="1" fill="currentColor" />
+                            <circle cx="6" cy="18" r="1" fill="currentColor" />
+                        </svg>
+                        <span>SERVERS</span>
+                    </button>
+                    <button class="nav-tab" data-tab="settings">
+                        <svg class="tab-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3" />
+                            <path
+                                d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z" />
+                        </svg>
+                        <span>SETTINGS</span>
+                    </button>
+                </nav>
+            </div>
+            <div class="window-controls">
+                <button class="window-btn minimize" id="btn-minimize">─</button>
+                <button class="window-btn maximize" id="btn-maximize">□</button>
+                <button class="window-btn close" id="btn-close">✕</button>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <div class="main-wrapper">
+            <!-- Left Sidebar -->
+            <aside class="sidebar">
+                <div class="game-logo">
+                    <div class="logo-glow"></div>
+                    <div class="logo-container">
+                        <span class="game-title">FIVEM</span>
+                        <span class="game-subtitle">LAUNCHER</span>
+                    </div>
+                </div>
+
+                <!-- Server Status -->
+                <div class="server-status-card" id="server-card">
+                    <div class="status-header">
+                        <span class="status-indicator" id="status-dot"></span>
+                        <span class="status-label" id="status-label">OFFLINE</span>
+                    </div>
+                    <div class="server-name" id="server-name">Select Server</div>
+                    <div class="player-count">
+                        <span class="count-icon">👥</span>
+                        <span id="player-count">0/0</span>
+                    </div>
+                </div>
+
+                <!-- Game Version -->
+                <div class="environment-section">
+                    <label class="env-label">GAME BUILD <span class="required-build" id="required-build"></span></label>
+                    <div class="env-selector">
+                        <select class="env-dropdown" id="game-build-select">
+                            <option value="">Loading...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Environment Section -->
+                <div class="environment-section">
+                    <label class="env-label">PURE MODE</label>
+                    <div class="env-selector">
+                        <select class="env-dropdown" id="pure-mode-select">
+                            <option value="0">Mode 0 - OFF</option>
+                            <option value="1">Mode 1 - Minimal</option>
+                            <option value="2">Mode 2 - Full</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Play Button -->
+                <div class="play-section">
+                    <button class="play-btn" id="btn-launch">
+                        <span class="play-text">PLAY</span>
+                        <div class="play-glow"></div>
+                    </button>
+                    <button class="settings-btn" id="btn-game-settings" title="Game Settings">
+                        ⚙️
+                    </button>
+                </div>
+
+                <div class="version-info">
+                    <span id="app-version">Version 1.0.0</span>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Tab: Home -->
+                <div class="tab-content active" id="tab-home">
+                    <!-- Announcement Bar -->
+                    <div class="announcement-bar">
+                        <span class="announce-icon">ℹ️</span>
+                        <span class="announce-text">Welcome to FiveM Launcher! Select your server and click Play.</span>
+                    </div>
+
+                    <!-- Hero Banner -->
+                    <div class="hero-banner">
+                        <div class="hero-overlay"></div>
+                        <div class="hero-content">
+                            <h1 class="hero-title">ONE CITY</h1>
+                            <p class="hero-subtitle">Roleplay Server</p>
+                        </div>
+                        <div class="hero-indicators">
+                            <span class="indicator active"></span>
+                            <span class="indicator"></span>
+                            <span class="indicator"></span>
+                        </div>
+                    </div>
+
+                    <!-- News Section -->
+                    <div class="news-section">
+                        <div class="news-card">
+                            <div class="news-image" style="background: linear-gradient(135deg, #1a1a2e, #16213e);">
+                            </div>
+                            <div class="news-info">
+                                <span class="news-title">Server News</span>
+                                <span class="news-date">16/12/2025</span>
+                            </div>
+                        </div>
+                        <div class="news-card">
+                            <div class="news-image" style="background: linear-gradient(135deg, #ff6b00, #ff9500);">
+                            </div>
+                            <div class="news-info">
+                                <span class="news-title">Updates</span>
+                                <span class="news-date">16/12/2025</span>
+                            </div>
+                        </div>
+                        <div class="news-card">
+                            <div class="news-image" style="background: linear-gradient(135deg, #0f3460, #533483);">
+                            </div>
+                            <div class="news-info">
+                                <span class="news-title">Events</span>
+                                <span class="news-date">16/12/2025</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Servers -->
+                <div class="tab-content" id="tab-servers">
+                    <div class="servers-header">
+                        <h2>Server List</h2>
+                        <button class="btn btn-secondary" id="btn-add-server-modal">+ Add Server</button>
+                    </div>
+                    <div class="servers-list" id="servers-list">
+                        <!-- Server cards will be added here -->
+                    </div>
+                </div>
+
+                <!-- Tab: Settings -->
+                <div class="tab-content" id="tab-settings">
+                    <div class="settings-panel">
+                        <h2>Settings</h2>
+
+                        <div class="settings-group">
+                            <h3>FiveM Path</h3>
+                            <div class="path-row">
+                                <input type="text" class="path-input" id="fivem-path-display" readonly
+                                    placeholder="Not configured">
+                                <button class="btn btn-secondary" id="btn-browse-path">Browse</button>
+                                <button class="btn btn-secondary" id="btn-detect-path">Auto Detect</button>
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <h3>FiveM Player Name</h3>
+                            <p class="settings-hint">✨ แก้ไขชื่อผู้เล่นใน FiveM โดยตรง (ต้องปิด FiveM ก่อน)</p>
+                            <div class="player-name-row">
+                                <input type="text" class="profile-input" id="fivem-player-name"
+                                    placeholder="กำลังโหลด...">
+                                <button class="btn btn-primary" id="btn-apply-player-name">Apply</button>
+                                <button class="btn btn-secondary" id="btn-test-fivem"
+                                    title="เปิด FiveM เพื่อทดสอบชื่อ">🧪 Test</button>
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <h3>Profiles</h3>
+                            <p class="settings-hint">💡 บันทึก Server + Game Build + Pure Mode สำหรับ Profile นี้</p>
+                            <div class="profile-row">
+                                <select class="profile-select" id="profile-select">
+                                    <option value="">-- New Profile --</option>
+                                </select>
+                                <input type="text" class="profile-input" id="profile-name"
+                                    placeholder="Profile Name (e.g. [1MD] YourName)">
+                                <button class="btn btn-secondary" id="btn-copy-profile"
+                                    title="Copy to clipboard">📋</button>
+                                <button class="btn btn-primary" id="btn-save-profile">Save</button>
+                                <button class="btn btn-danger" id="btn-delete-profile">Delete</button>
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <h3>Updates</h3>
+                            <div class="update-row">
+                                <button class="btn btn-secondary" id="btn-check-update">Check Launcher Updates</button>
+                                <button class="btn btn-secondary" id="btn-update-fivem">Update FiveM</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Add Server Modal -->
+        <div class="modal" id="add-server-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Add New Server</h2>
+                    <button class="modal-close" id="btn-close-add-server">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Server Name</label>
+                        <input type="text" id="new-server-name" placeholder="My Server">
+                    </div>
+                    <div class="form-group">
+                        <label>Server Address</label>
+                        <input type="text" id="new-server-address" placeholder="IP:Port or cfx.re/join/xxx">
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn btn-secondary" id="btn-cancel-add-server">Cancel</button>
+                        <button class="btn btn-primary" id="btn-confirm-add-server">Add Server</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Container -->
+        <div class="toast-container" id="toast-container"></div>
+    </div>
+
+    <script src="scripts/renderer.js"></script>
+</body>
+
+</html>

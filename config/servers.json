@@ -1,0 +1,18 @@
+{
+  "servers": [
+    {
+      "id": "onecity",
+      "name": "One City RP",
+      "address": "one-city.myddns.me:30120",
+      "description": "One City Roleplay Server",
+      "maxPlayers": 200,
+      "savedGameBuild": "3095",
+      "savedPureMode": 2
+    }
+  ],
+  "settings": {
+    "autoDetectFiveM": true,
+    "checkServerStatusInterval": 30000,
+    "checkUpdateOnStartup": true
+  }
+}

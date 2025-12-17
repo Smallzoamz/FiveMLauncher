@@ -1,0 +1,61 @@
+{
+  "name": "fivem-launcher",
+  "version": "1.0.0",
+  "description": "FiveM Launcher with Pure Mode Selection, Server Management & Auto-Update",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron .",
+    "build": "electron-builder --win --x64",
+    "pack": "electron-builder --dir"
+  },
+  "author": "FiveM Launcher",
+  "license": "MIT",
+  "dependencies": {
+    "classic-level": "^3.0.0",
+    "electron-store": "^8.1.0",
+    "electron-updater": "^6.1.7",
+    "level": "^10.0.0"
+  },
+  "devDependencies": {
+    "electron": "^39.2.7",
+    "electron-builder": "^24.9.1",
+    "png-to-ico": "^3.0.1",
+    "sharp": "^0.34.5",
+    "to-ico": "^1.1.5"
+  },
+  "build": {
+    "appId": "com.fivem.launcher",
+    "productName": "FiveM Launcher",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "src/**/*",
+      "assets/**/*",
+      "config/**/*"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "your-username",
+        "repo": "fivem-launcher"
+      }
+    ]
+  }
+}
