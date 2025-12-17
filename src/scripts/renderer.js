@@ -78,6 +78,7 @@ async function initializeApp() {
     // Initialize
     initWindowControls();
     initNavigation();
+    loadTheme(); // Load theme early for smooth experience
     await loadFiveMPath();
     await loadGameBuilds();
     await loadFiveMPlayerName();
@@ -86,9 +87,50 @@ async function initializeApp() {
     await loadLastSettings();
 
     setupEventListeners();
+    setupThemeListeners();
     startServerStatusCheck();
     setupUpdateListeners();
     setupFiveMExitListener();
+}
+
+// ==================== Theme ====================
+function loadTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'orange';
+    applyTheme(savedTheme);
+    updateThemeButtons(savedTheme);
+}
+
+function applyTheme(theme) {
+    if (theme === 'orange') {
+        document.documentElement.removeAttribute('data-theme');
+    } else {
+        document.documentElement.setAttribute('data-theme', theme);
+    }
+}
+
+function updateThemeButtons(activeTheme) {
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.theme === activeTheme) {
+            btn.classList.add('active');
+        }
+    });
+}
+
+function setTheme(theme) {
+    localStorage.setItem('theme', theme);
+    applyTheme(theme);
+    updateThemeButtons(theme);
+    showToast(`Theme changed to ${theme.charAt(0).toUpperCase() + theme.slice(1)}`, 'success');
+}
+
+function setupThemeListeners() {
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const theme = btn.dataset.theme;
+            setTheme(theme);
+        });
+    });
 }
 
 // ==================== Window Controls ====================

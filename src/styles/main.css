@@ -1,6 +1,6 @@
 /* ==================== CSS Variables & Theme ==================== */
 :root {
-    /* Dark Black + Orange Neon Theme */
+    /* Dark Black + Orange Neon Theme (Default) */
     --bg-primary: #0a0a0a;
     --bg-secondary: #111111;
     --bg-tertiary: #1a1a1a;
@@ -49,6 +49,34 @@
     --transition-normal: 0.25s ease;
 }
 
+/* ==================== Blue Theme ==================== */
+[data-theme="blue"] {
+    --accent-primary: #0ea5e9;
+    --accent-secondary: #38bdf8;
+    --accent-light: #7dd3fc;
+    --accent-gradient: linear-gradient(135deg, #0284c7 0%, #0ea5e9 50%, #38bdf8 100%);
+    --accent-glow: rgba(14, 165, 233, 0.5);
+    --play-gradient: linear-gradient(135deg, #0284c7 0%, #0ea5e9 50%, #38bdf8 100%);
+    --border-color: rgba(14, 165, 233, 0.15);
+    --border-hover: rgba(14, 165, 233, 0.5);
+    --shadow-neon: 0 0 20px rgba(14, 165, 233, 0.4), 0 0 40px rgba(14, 165, 233, 0.2);
+    --glass-border: rgba(14, 165, 233, 0.1);
+}
+
+/* ==================== Purple Theme ==================== */
+[data-theme="purple"] {
+    --accent-primary: #a855f7;
+    --accent-secondary: #c084fc;
+    --accent-light: #d8b4fe;
+    --accent-gradient: linear-gradient(135deg, #9333ea 0%, #a855f7 50%, #c084fc 100%);
+    --accent-glow: rgba(168, 85, 247, 0.5);
+    --play-gradient: linear-gradient(135deg, #9333ea 0%, #a855f7 50%, #c084fc 100%);
+    --border-color: rgba(168, 85, 247, 0.15);
+    --border-hover: rgba(168, 85, 247, 0.5);
+    --shadow-neon: 0 0 20px rgba(168, 85, 247, 0.4), 0 0 40px rgba(168, 85, 247, 0.2);
+    --glass-border: rgba(168, 85, 247, 0.1);
+}
+
 /* ==================== Reset & Base ==================== */
 * {
     margin: 0;
@@ -73,7 +101,7 @@ body {
     position: relative;
 }
 
-/* Background Effect - Orange */
+/* Background Effect - Dynamic Theme Color */
 .app-container::before {
     content: '';
     position: absolute;
@@ -82,8 +110,9 @@ body {
     right: 0;
     bottom: 0;
     background:
-        radial-gradient(ellipse at 10% 10%, rgba(255, 107, 0, 0.06) 0%, transparent 50%),
-        radial-gradient(ellipse at 90% 90%, rgba(255, 140, 0, 0.04) 0%, transparent 50%);
+        radial-gradient(ellipse at 10% 10%, var(--accent-glow) 0%, transparent 50%),
+        radial-gradient(ellipse at 90% 90%, var(--glass-border) 0%, transparent 50%);
+    opacity: 0.12;
     pointer-events: none;
     z-index: 0;
 }
@@ -218,13 +247,13 @@ body {
 
 .nav-tab:hover {
     color: var(--text-primary);
-    background: rgba(255, 107, 0, 0.1);
+    background: var(--glass-border);
 }
 
 .nav-tab.active {
     color: var(--text-primary);
     background: var(--accent-gradient);
-    box-shadow: 0 0 15px rgba(255, 107, 0, 0.3);
+    box-shadow: 0 0 15px var(--accent-glow);
 }
 
 .tab-icon {
@@ -250,7 +279,7 @@ body {
 }
 
 .window-btn:hover {
-    background: rgba(255, 107, 0, 0.2);
+    background: var(--glass-border);
     color: var(--accent-primary);
 }
 
@@ -425,7 +454,7 @@ body {
 .env-dropdown:focus {
     border-color: var(--accent-primary);
     outline: none;
-    box-shadow: 0 0 0 2px rgba(255, 107, 0, 0.2);
+    box-shadow: 0 0 0 2px var(--glass-border);
 }
 
 .env-input {
@@ -442,7 +471,7 @@ body {
 .env-input:focus {
     border-color: var(--accent-primary);
     outline: none;
-    box-shadow: 0 0 0 2px rgba(255, 107, 0, 0.2);
+    box-shadow: 0 0 0 2px var(--glass-border);
 }
 
 .env-input::placeholder {
@@ -470,7 +499,7 @@ body {
     color: var(--text-muted);
     margin-bottom: 12px;
     padding: 10px;
-    background: rgba(255, 107, 0, 0.05);
+    background: var(--glass-border);
     border-radius: var(--radius-sm);
     border-left: 2px solid var(--accent-primary);
 }
@@ -559,7 +588,7 @@ body {
 
 .settings-btn:hover {
     border-color: var(--accent-primary);
-    background: rgba(255, 107, 0, 0.1);
+    background: var(--glass-border);
 }
 
 .version-info {
@@ -654,8 +683,9 @@ body {
     position: absolute;
     inset: 0;
     background:
-        radial-gradient(ellipse at 30% 50%, rgba(255, 107, 0, 0.15) 0%, transparent 60%),
-        radial-gradient(ellipse at 70% 50%, rgba(255, 140, 0, 0.1) 0%, transparent 60%);
+        radial-gradient(ellipse at 30% 50%, var(--accent-glow) 0%, transparent 60%),
+        radial-gradient(ellipse at 70% 50%, var(--glass-border) 0%, transparent 60%);
+    opacity: 0.3;
 }
 
 .hero-overlay {
@@ -729,7 +759,7 @@ body {
 .news-card:hover {
     border-color: var(--accent-primary);
     transform: translateY(-4px);
-    box-shadow: 0 8px 30px rgba(255, 107, 0, 0.15);
+    box-shadow: 0 8px 30px var(--accent-glow);
 }
 
 .news-image {
@@ -792,8 +822,8 @@ body {
 
 .server-item.selected {
     border-color: var(--accent-primary);
-    background: linear-gradient(135deg, rgba(255, 107, 0, 0.1) 0%, rgba(255, 140, 0, 0.05) 100%);
-    box-shadow: 0 0 20px rgba(255, 107, 0, 0.15);
+    background: linear-gradient(135deg, var(--glass-border) 0%, transparent 100%);
+    box-shadow: 0 0 20px var(--accent-glow);
 }
 
 .server-item-status {
@@ -947,7 +977,7 @@ body {
 }
 
 .btn-primary:hover {
-    box-shadow: 0 0 20px rgba(255, 107, 0, 0.4);
+    box-shadow: 0 0 20px var(--accent-glow);
     transform: translateY(-1px);
 }
 
@@ -959,7 +989,7 @@ body {
 
 .btn-secondary:hover {
     border-color: var(--accent-primary);
-    background: rgba(255, 107, 0, 0.1);
+    background: var(--glass-border);
 }
 
 .btn-danger {
@@ -994,7 +1024,7 @@ body {
     border-radius: var(--radius-lg);
     width: 400px;
     max-width: 90%;
-    box-shadow: var(--shadow-lg), 0 0 40px rgba(255, 107, 0, 0.1);
+    box-shadow: var(--shadow-lg), 0 0 40px var(--glass-border);
 }
 
 .modal-header {
@@ -1023,7 +1053,7 @@ body {
 }
 
 .modal-close:hover {
-    background: rgba(255, 107, 0, 0.2);
+    background: var(--glass-border);
     color: var(--accent-primary);
 }
 
@@ -1057,7 +1087,7 @@ body {
 .form-group input:focus {
     border-color: var(--accent-primary);
     outline: none;
-    box-shadow: 0 0 0 2px rgba(255, 107, 0, 0.2);
+    box-shadow: 0 0 0 2px var(--glass-border);
 }
 
 .modal-actions {
@@ -1125,4 +1155,52 @@ body {
         opacity: 0;
         transform: translateX(100px);
     }
+}
+
+/* ==================== Theme Selector ==================== */
+.theme-selector {
+    display: flex;
+    gap: 12px;
+}
+
+.theme-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 24px;
+    background: var(--bg-tertiary);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition-normal);
+}
+
+.theme-btn:hover {
+    border-color: var(--text-muted);
+    transform: translateY(-2px);
+}
+
+.theme-btn.active {
+    border-color: var(--accent-primary);
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 0 15px var(--accent-glow);
+}
+
+.theme-color {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.theme-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    letter-spacing: 0.5px;
+}
+
+.theme-btn.active .theme-name {
+    color: var(--text-primary);
 }
