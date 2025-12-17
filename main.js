@@ -630,25 +630,58 @@ ipcMain.handle('get-active-profile', () => {
 });
 
 // ==================== Config Management ====================
+// Get user data config path (writable)
+function getServersConfigPath() {
+    const userDataPath = app.getPath('userData');
+    return path.join(userDataPath, 'servers.json');
+}
+
+// Get default config path (bundled with app)
+function getDefaultServersConfigPath() {
+    // When packaged, use resources path; in dev, use __dirname
+    if (app.isPackaged) {
+        return path.join(process.resourcesPath, 'app.asar', 'config', 'servers.json');
+    }
+    return path.join(__dirname, 'config', 'servers.json');
+}
+
 ipcMain.handle('get-servers-config', () => {
     try {
-        const configPath = path.join(__dirname, 'config', 'servers.json');
-        if (fs.existsSync(configPath)) {
-            const config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+        const userConfigPath = getServersConfigPath();
+
+        // If user config exists, use it
+        if (fs.existsSync(userConfigPath)) {
+            const config = JSON.parse(fs.readFileSync(userConfigPath, 'utf-8'));
             return config;
         }
-        return { servers: [], settings: {} };
+
+        // Otherwise, try to copy from default config
+        const defaultConfigPath = getDefaultServersConfigPath();
+        if (fs.existsSync(defaultConfigPath)) {
+            const defaultConfig = JSON.parse(fs.readFileSync(defaultConfigPath, 'utf-8'));
+            // Save to user data for future use
+            fs.writeFileSync(userConfigPath, JSON.stringify(defaultConfig, null, 2));
+            return defaultConfig;
+        }
+
+        // No config found, create empty one
+        const emptyConfig = { servers: [], settings: {} };
+        fs.writeFileSync(userConfigPath, JSON.stringify(emptyConfig, null, 2));
+        return emptyConfig;
     } catch (error) {
+        console.error('Error loading servers config:', error);
         return { servers: [], settings: {} };
     }
 });
 
 ipcMain.handle('save-servers-config', (event, config) => {
     try {
-        const configPath = path.join(__dirname, 'config', 'servers.json');
-        fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+        const userConfigPath = getServersConfigPath();
+        fs.writeFileSync(userConfigPath, JSON.stringify(config, null, 2));
+        console.log('Saved servers config to:', userConfigPath);
         return { success: true };
     } catch (error) {
+        console.error('Error saving servers config:', error);
         return { success: false, error: error.message };
     }
 });
